@@ -38,9 +38,40 @@
     <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
     <script>
 
-      function getDueDate(due_at) {
-
+      //The plan next time is to go ahead and narrow down the use to where it only shows assignments and the due date possibly just using the assignment date name
+      //From there just have a list per class or start off by having just the class 
+      function displayDueDate(user_data, coursesArray){
+        console.log(user_data);
+        console.log(coursesArray);
+        var currentCoursesArrayStartLocation = (coursesArray.length - numOfCourses);
+        var coursesArraylength = coursesArray.length;
+        for(var j=currentCoursesArrayStartLocation; j<=coursesArraylength; j++){
+         console.log("made it into loop");
+         //create table
+         $.each(user_data["courses"], function (i, course) {
+           console.log("in loop part1")
+           if(course["course_id"]==coursesArray[j]){
+             console.log("in if part1")
+             console.log(course["course_id"]);
+             var assignments = course["assignments"];
+             //var assignments_div = $("#assignments");
+             console.table(assignments, ['assignment_id', 'due_at', 'grading_type', 'name', 'html_url']);
+             $.each(assignments, function(i, assignment) {
+                  var assignment_id = assignment["assignment_id"];
+                  var due_at        = assignment["due_at"];
+                  var grading_type  = assignment["grading_type"]
+                  var name          = assignment["name"];
+                  var html_url      = assignment["html_url"];
+                  var newLink = html_url.link(html_url);
+                  console.log(assignment_id);
+                  $("tbody").append(`<tr><td>${assignment_id}</td> <td>${due_at}</td> <td>${grading_type}</td> <td>${name}</td> <td>${newLink}</td></tr>`)
+            });
+          }
+       });
       }
+    }
+    
+
 
 
       
